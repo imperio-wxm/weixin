@@ -4,9 +4,12 @@ import com.imperio.menu.pojo.AccessToken;
 import com.imperio.menu.pojo.Button;
 import com.imperio.menu.pojo.ClickButton;
 import com.imperio.menu.pojo.ComplexButton;
+import com.imperio.menu.pojo.MaterialList;
 import com.imperio.menu.pojo.Menu;
 import com.imperio.menu.pojo.ViewButton;
 import com.imperio.util.WeixinUtil;  
+
+import net.sf.json.JSONObject;
 
 import org.slf4j.Logger;  
 import org.slf4j.LoggerFactory;  
@@ -16,19 +19,18 @@ import org.slf4j.LoggerFactory;
  * @author Administrator
  *
  */
-public class MenuManager {  
-    private static Logger log = LoggerFactory.getLogger(MenuManager.class);  
+public class MainManager {  
+    private static Logger log = LoggerFactory.getLogger(MainManager.class);  
   
     public static void main(String[] args) {  
         // 第三方用户唯一凭证  
         String appId = "wxf4ae77f836af1dea";  
         // 第三方用户唯一凭证密钥  
         String appSecret = "9d4941961d64dc2e461db3beed3faa08";  
-        System.out.println("这是主菜单调用函数");
   
         // 调用接口获取access_token  
         AccessToken at = WeixinUtil.getAccessToken(appId, appSecret);  
-  
+          
         if (null != at) {  
             // 调用接口创建菜单  
             int result = WeixinUtil.createMenu(getMenu(), at.getToken());  
@@ -43,6 +45,9 @@ public class MenuManager {
                 System.out.println("菜单创建失败");
             }
         }  
+        
+        MaterialList materialList = WeixinUtil.getMaterialList(at.getToken(), "news");
+        System.out.println("该类型的素材的总数:" + materialList.getTotal_count());
     }  
   
     /** 
@@ -50,8 +55,7 @@ public class MenuManager {
      *  
      * @return 
      */  
-    private static Menu getMenu() {  
-    	
+    private static Menu getMenu() {   	
     	/**
     	 * 子菜单
     	 */

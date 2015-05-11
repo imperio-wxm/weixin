@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;  
 
 import com.imperio.menu.pojo.AccessToken;
+import com.imperio.menu.pojo.MaterialList;
 import com.imperio.menu.pojo.Menu;
   
 /**
@@ -58,9 +59,6 @@ public class WeixinUtil {
             httpUrlConn.setUseCaches(false);  
             //设置请求方式（GET/POST）  
             httpUrlConn.setRequestMethod(requestMethod);  
-  
-            if ("GET".equalsIgnoreCase(requestMethod))  
-                httpUrlConn.connect();  
   
             //当有数据需要提交时  
             if (null != outputStr) {  
@@ -151,10 +149,54 @@ public class WeixinUtil {
       
         if (null != jsonObject) {  
             if (0 != jsonObject.getInt("errcode")) {  
-                result = jsonObject.getInt("errcode");  
-                log.error("创建菜单失败 errcode:{} errmsg:{}", jsonObject.getInt("errcode"), jsonObject.getString("errmsg"));  
+                result = jsonObject.getInt("errcode");
+                int errorCode = jsonObject.getInt("errcode");
+    			String errorMsg = jsonObject.getString("errmsg");
+                log.error("创建菜单失败 errcode:{} errmsg:{}", errorCode, errorMsg);  
             }  
         }      
         return result;  
     }    
+    
+    
+    
+    //获取素材列表url
+    private static String get_materialList_url = "https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=ACCESS_TOKEN";
+    /**
+     * 获取素材列表
+     */
+    public static MaterialList getMaterialList(String accessToken,String type) {
+    	MaterialList materialList = null;
+    	// 拼装创建菜单的url  
+        String url = get_materialList_url.replace("ACCESS_TOKEN", accessToken);  
+      //需要提交的JSON数据
+    	String jsonMsg = "{\"type\":\"%s\",\"offset\":%d,\"count\":%d}";	
+    	//获取素材列表
+    	JSONObject jsonObject = WeixinUtil.httpRequest(url, "POST", String.format(jsonMsg,type,0,10));
+		if (null != jsonObject) {
+			System.out.println(jsonObject);
+			try {
+    			materialList = new MaterialList();
+    			materialList.setMedia_id(jsonObject.getInt("media_id"));
+    			materialList.setTotal_count(jsonObject.getInt("total_count"));
+    			materialList.setItem_count(jsonObject.getInt("item_count"));
+    			materialList.setTitle(jsonObject.getString("title"));
+    			materialList.setThumb_media_id(jsonObject.getInt("thumb_media_id"));
+    			materialList.setShow_cover_pic(jsonObject.getInt("show_cover_pic"));
+    			materialList.setAuthor(jsonObject.getString("author"));
+    			materialList.setDigest(jsonObject.getString("digest"));
+    			materialList.setContent(jsonObject.getString("content"));    			
+    			materialList.setUrl(jsonObject.getString("url"));    			
+    			materialList.setContent_source_url(jsonObject.getString("content_source_url"));    			
+    			materialList.setUpdate_time(jsonObject.getLong("update_time"));
+    			materialList.setName(jsonObject.getString("name"));
+    		} catch (JSONException e){
+    			materialList = null; 
+    			int errorCode = jsonObject.getInt("errcode");
+    			String errorMsgString = jsonObject.getString("errmsg");
+                log.error("获取素材列表失败 errcode:{} errmsg:{}", errorCode, errorMsgString);
+            }
+    	}
+		return materialList;  
+    }
 }  

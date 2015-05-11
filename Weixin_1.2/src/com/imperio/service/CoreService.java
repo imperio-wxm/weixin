@@ -105,7 +105,7 @@ public class CoreService {
                     	respMessage = MessageService.initText(toUserName,fromUserName,respContent); 
                     } else if (eventKey.equals("btnProducts")) {  
                     	respContent = "您点击的是产品信息！";
-                      	respMessage = MessageService.initText(toUserName,fromUserName,respContent); 
+                    	respMessage = NewsMessageService.createNewsMessage(fromUserName, toUserName);
                     } else if (eventKey.equals("btnCase")) {  
                     	respContent = "您点击的是案例信息！";
                       	respMessage = MessageService.initText(toUserName,fromUserName,respContent); 
