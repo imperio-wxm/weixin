@@ -21,5 +21,6 @@ public class ViewButton extends Button{
 	}
 	public void setUrl(String url) {
 		this.url = url;
-	}		
+	}
+		
 }

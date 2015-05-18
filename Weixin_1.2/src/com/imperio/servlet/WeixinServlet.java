@@ -29,6 +29,9 @@ public class WeixinServlet extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 微信加密签名
 		String signature = request.getParameter("signature");
+		
+System.out.println("signature: " + signature);
+
 		// 时间戳
 		String timestamp = request.getParameter("timestamp");
 		// 随机数

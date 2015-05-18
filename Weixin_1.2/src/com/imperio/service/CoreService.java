@@ -36,8 +36,14 @@ public class CoreService {
   
             // 发送方帐号（open_id）  
             String fromUserName = requestMap.get("FromUserName");  
+            
+System.out.println("fromUserName:" + fromUserName);
+
             // 公众帐号  
-            String toUserName = requestMap.get("ToUserName");  
+            String toUserName = requestMap.get("ToUserName"); 
+            
+System.out.println("toUserName:" + toUserName);
+
             // 消息类型  
             String msgType = requestMap.get("MsgType");  
   
@@ -47,18 +53,10 @@ public class CoreService {
             	//获取用户输入的文字内容
                 String content = requestMap.get("Content");  
       
-                if ("1".equals(content)) {  
-                	//产品分类菜单
-                	respMessage = MessageService.initText(toUserName,fromUserName,MessageService.projectMainMenu()); 
-                } else if("2".equals(content)) {
-                	respMessage = MessageService.initText(toUserName,fromUserName,MessageService.projectMainMenu()); 
-                } else if("?".equals(content) || "？".equals(content) || "help".equals(content) || "HELP".equals(content)) {
+                if("?".equals(content) || "？".equals(content) || "help".equals(content) || "HELP".equals(content)) {
                 	respMessage = MessageService.initText(toUserName,fromUserName,MessageService.menuMessage()); 
-                } else if("01".equals(content)) {
-                	respMessage = NewsMessageService.createNewsMessage(fromUserName, toUserName);
                 } else {
-                	respMessage = MessageService.initText(toUserName,fromUserName,"您输入的编号有误，请按帮助菜单重新输入！\n\n" 
-                			+ MessageService.menuMessage()); 
+                	respMessage = MessageService.initText(toUserName,fromUserName,"您输入的编号有误，请重新输入!"); 
                 }
             } 
             // 图片消息  
@@ -89,7 +87,7 @@ public class CoreService {
                 // 订阅  
                 if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {  
                 	//输出主菜单
-                	respMessage = MessageService.initText(toUserName,fromUserName,MessageService.menuMessage()); 
+                	respMessage = NewsMessageService.createNewsMessage(fromUserName, toUserName); 
                 }  
                 // 取消订阅  
                 else if (eventType.equals(MessageUtil.EVENT_TYPE_UNSUBSCRIBE)) {  
@@ -105,7 +103,7 @@ public class CoreService {
                     	respMessage = MessageService.initText(toUserName,fromUserName,respContent); 
                     } else if (eventKey.equals("btnProducts")) {  
                     	respContent = "您点击的是产品信息！";
-                    	respMessage = NewsMessageService.createNewsMessage(fromUserName, toUserName);
+                      	respMessage = MessageService.initText(toUserName,fromUserName,respContent); 
                     } else if (eventKey.equals("btnCase")) {  
                     	respContent = "您点击的是案例信息！";
                       	respMessage = MessageService.initText(toUserName,fromUserName,respContent); 
@@ -121,8 +119,6 @@ public class CoreService {
                     } 
                 }  
             }  
-            /*textMessage.setContent(respContent);  
-            respMessage = MessageUtil.textMessageToXml(textMessage);  */
         } catch (Exception e) {  
             e.printStackTrace();  
         }  

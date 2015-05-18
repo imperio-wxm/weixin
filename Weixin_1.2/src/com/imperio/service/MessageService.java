@@ -31,10 +31,12 @@ public class MessageService {
     public static String menuMessage() {
     	//拼接字符串
     	StringBuffer sbBuffer = new StringBuffer();
-    	sbBuffer.append("欢迎您的关注!\n请按照菜单提示进行操作：\n");
-    	sbBuffer.append("1.产品中心 \n");
-    	sbBuffer.append("2.关于我们 \n\n");
-    	sbBuffer.append("回复help[?]调出菜单.");
+    	sbBuffer.append("感谢您的关注!\n");
+    	sbBuffer.append("1.首页左上角【方块图标】用于导航 \n");
+    	sbBuffer.append("2.【首页】-进入公司微网站首页\n");
+    	sbBuffer.append("3.【产品与案例】-查看产品与案例信息\n");
+    	sbBuffer.append("4.【了解我们】-对公司进行了解\n\n");
+    	sbBuffer.append("回复?或者Help调出帮助菜单.");
     	return sbBuffer.toString();  	
     }
     
